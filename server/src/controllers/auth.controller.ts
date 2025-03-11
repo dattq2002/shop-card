@@ -8,14 +8,18 @@ import { UserVerifyStatus } from '~/constants/enums'
 import { hashPassword } from '~/utils/crypto'
 import userService from '~/service/user.service'
 import { ObjectId } from 'mongodb'
+import { ResponseAny } from '~/models/other'
+import HTTP_STATUS from '~/constants/httpStatus'
 
 export const RegisterController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
   const data = await authService.register(req.body)
-  return void res.json({
-    status: res.statusCode,
-    message: USERS_MESSAGES.REGISTER_SUCCESS,
-    data
-  })
+  return void res.json(
+    new ResponseAny({
+      status: res.statusCode,
+      message: USERS_MESSAGES.REGISTER_SUCCESS,
+      data
+    })
+  )
 }
 
 export const EmailVerifyController = async (req: Request, res: Response) => {
@@ -27,10 +31,13 @@ export const EmailVerifyController = async (req: Request, res: Response) => {
     })
   }
   const result = await authService.verifyEmail(user_id)
-  return void res.json({
-    message: USERS_MESSAGES.EMAIL_VERIFY_SUCCESS,
-    result
-  })
+  return void res.json(
+    new ResponseAny({
+      status: res.statusCode,
+      message: USERS_MESSAGES.EMAIL_VERIFY_SUCCESS,
+      data: result
+    })
+  )
 }
 
 export const LoginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
@@ -55,11 +62,13 @@ export const LoginController = async (req: Request<ParamsDictionary, any, LoginR
     })
   }
   const data = await authService.login(user._id)
-  return void res.json({
-    status: res.statusCode,
-    message: USERS_MESSAGES.LOGIN_SUCCESS,
-    data
-  })
+  return void res.json(
+    new ResponseAny({
+      status: res.statusCode,
+      message: USERS_MESSAGES.LOGIN_SUCCESS,
+      data
+    })
+  )
 }
 
 export const RefreshTokenController = async (req: Request, res: Response) => {
@@ -84,9 +93,40 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     })
   }
   const data = await authService.refreshToken(new ObjectId(user._id))
-  return void res.json({
-    status: res.statusCode,
-    message: USERS_MESSAGES.RE_PROVIDE_TOKEN_SUCCESS,
-    data
-  })
+  return void res.json(
+    new ResponseAny({
+      status: res.statusCode,
+      message: USERS_MESSAGES.RE_PROVIDE_TOKEN_SUCCESS,
+      data
+    })
+  )
+}
+
+export const LogoutController = async (req: Request, res: Response) => {
+  const decoded_authorization = req.decoded_authorization as TokenPayload
+  const result = await authService.logout(decoded_authorization.user_id)
+  return result
+    ? void res.json(
+        new ResponseAny({
+          status: res.statusCode,
+          message: USERS_MESSAGES.LOGOUT_SUCCESS,
+          data: result
+        })
+      )
+    : void res.json({
+        status: HTTP_STATUS.BAD_REQUEST,
+        message: USERS_MESSAGES.LOGOUT_FAIL
+      })
+}
+
+export const ResendEmailVerifyController = async (req: Request, res: Response) => {
+  const user = req.user as User
+  const result = await authService.resendEmailVerify(user)
+  return void res.json(
+    new ResponseAny({
+      status: res.statusCode,
+      message: USERS_MESSAGES.RESEND_EMAIL_VERIFY_SUCCESS,
+      data: result
+    })
+  )
 }

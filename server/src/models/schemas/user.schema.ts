@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { RoleTypes, UserVerifyStatus } from '~/constants/enums'
+import { getCurrentDate } from '~/utils/commons'
 
 interface UserTypes {
   _id?: ObjectId
@@ -11,8 +12,8 @@ interface UserTypes {
   flag?: boolean
   email_verify_token?: string
   verify: UserVerifyStatus
-  create_date?: Date
-  update_date?: Date
+  create_date?: string
+  update_date?: string
 }
 
 export default class User {
@@ -22,8 +23,8 @@ export default class User {
   password: string
   role: string
   avatar: string
-  create_date: Date
-  update_date: Date
+  create_date: string
+  update_date: string
   flag: boolean
   email_verify_token: string
   verify: UserVerifyStatus
@@ -34,8 +35,8 @@ export default class User {
     this.password = user.password || ''
     this.role = user.role || RoleTypes.Customer
     this.avatar = user.avatar || ''
-    this.create_date = user.create_date || new Date()
-    this.update_date = user.update_date || new Date()
+    this.create_date = user.create_date || getCurrentDate()
+    this.update_date = user.update_date || getCurrentDate()
     this.flag = user.flag || false
     this.email_verify_token = user.email_verify_token || ''
     this.verify = user.verify

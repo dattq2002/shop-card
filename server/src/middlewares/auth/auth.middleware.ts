@@ -11,67 +11,8 @@ import { UserVerifyStatus } from '~/constants/enums'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { capitalize } from 'lodash'
 import authService from '~/service/auth.service'
+import { passwordSchema, confirmPasswordSchema, emailSchema } from '~/models/paramSchema'
 
-const passwordSchema: ParamSchema = {
-  notEmpty: {
-    errorMessage: USERS_MESSAGES.PASSWORD_IS_REQUIRED
-  },
-  isString: {
-    errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING
-  },
-  isLength: {
-    options: {
-      min: 8,
-      max: 50
-    },
-    errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_8_TO_50
-  },
-  isStrongPassword: {
-    options: {
-      minLength: 8,
-      // minLowercase: 1,
-      // minUppercase: 1,
-      // minNumbers: 1,
-      // minSymbols: 1
-      returnScore: true
-    },
-    errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG
-  }
-}
-const confirmPasswordSchema: ParamSchema = {
-  notEmpty: {
-    errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED
-  },
-  isString: {
-    errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING
-  },
-  isLength: {
-    options: {
-      min: 8,
-      max: 50
-    },
-    errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_LENGTH_MUST_BE_FROM_8_TO_50
-  },
-  isStrongPassword: {
-    options: {
-      minLength: 8,
-      // minLowercase: 1,
-      // minUppercase: 1,
-      // minNumbers: 1,
-      // minSymbols: 1
-      returnScore: true
-    },
-    errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_STRONG
-  },
-  custom: {
-    options: (value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error(USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD)
-      }
-      return true
-    }
-  }
-}
 export const RegisterValidator = validate(
   checkSchema(
     {
@@ -171,29 +112,7 @@ export const emailVerifyTokenValidator = validate(
 export const LoginValidator = validate(
   checkSchema(
     {
-      email: {
-        notEmpty: {
-          errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED
-        },
-        isEmail: {
-          errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID
-        },
-        custom: {
-          options: async (value, { req }) => {
-            const userExist = await databaseService.users.findOne({
-              email: value
-            })
-            if (userExist) {
-              req.user = userExist
-              return true
-            }
-            throw new ErrorWithStatus({
-              message: USERS_MESSAGES.EMAIL_NOT_FOUND,
-              status: HTTP_STATUS.NOT_FOUND
-            })
-          }
-        }
-      },
+      email: emailSchema,
       password: passwordSchema
     },
     ['body']
@@ -222,6 +141,15 @@ export const accessTokenValidator = validate(
               })
               //; quan trọng
               ;(req as Request).decoded_authorization = decoded_authorization
+              const refresh_token = await databaseService.refreshTokens.findOne({
+                user_id: new ObjectId(decoded_authorization.user_id)
+              })
+              if (!refresh_token) {
+                throw new ErrorWithStatus({
+                  message: USERS_MESSAGES.YOU_HAVE_NOT_LOGGED_IN,
+                  status: HTTP_STATUS.UNAUTHORIZED
+                })
+              }
             } catch (error) {
               throw new ErrorWithStatus({
                 message: capitalize((error as JsonWebTokenError).message),
@@ -270,6 +198,14 @@ export const refreshTokenValidator = validate(
           }
         }
       }
+    },
+    ['body']
+  )
+)
+export const emailValidator = validate(
+  checkSchema(
+    {
+      email: emailSchema
     },
     ['body']
   )

@@ -28,112 +28,112 @@ class DatabaseService {
     return this.db.collection(process.env.DB_USERS_COLLECTION as string)
   }
   initDatabase() {
-    this.users.insertMany([
-      {
-        _id: new ObjectId(),
-        email: 'user1@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      },
-      {
-        _id: new ObjectId(),
-        email: 'user2@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      },
-      {
-        _id: new ObjectId(),
-        email: 'user3@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      },
-      {
-        _id: new ObjectId(),
-        email: 'user4@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      },
-      {
-        _id: new ObjectId(),
-        email: 'user5@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      },
-      {
-        _id: new ObjectId(),
-        email: 'user6@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      },
-      {
-        _id: new ObjectId(),
-        email: 'user7@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      },
-      {
-        _id: new ObjectId(),
-        email: 'user8@gmail.com',
-        password: '',
-        verify: 1,
-        email_verify_token: '',
-        avatar: '',
-        name: '',
-        role: 'Customer',
-        flag: false,
-        create_date: new Date(),
-        update_date: new Date()
-      }
-    ])
+    // this.users.insertMany([
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user1@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   },
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user2@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   },
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user3@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   },
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user4@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   },
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user5@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   },
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user6@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   },
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user7@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   },
+    //   {
+    //     _id: new ObjectId(),
+    //     email: 'user8@gmail.com',
+    //     password: '',
+    //     verify: 1,
+    //     email_verify_token: '',
+    //     avatar: '',
+    //     name: '',
+    //     role: 'Customer',
+    //     flag: false,
+    //     create_date: new Date(),
+    //     update_date: new Date()
+    //   }
+    // ])
   }
   get refreshTokens(): Collection<RefreshToken> {
     return this.db.collection(process.env.DB_REFRESH_TOKENS_COLLECTION as string)

@@ -29,5 +29,12 @@ export const USERS_MESSAGES = {
   EMAIL_NOT_VERIFIED: 'Email not verified',
   ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
   USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
-  RE_PROVIDE_TOKEN_SUCCESS: 'Re-provide token success'
+  RE_PROVIDE_TOKEN_SUCCESS: 'Re-provide token success',
+  GET_ALL_USERS_SUCCESS: 'Get all users success',
+  GET_USER_BY_ID_SUCCESS: 'Get user by id success',
+  GET_ME_SUCCESS: 'Get me success',
+  LOGOUT_SUCCESS: 'Logout success',
+  LOGOUT_FAIL: 'Logout fail',
+  YOU_HAVE_NOT_LOGGED_IN: 'You have not logged in',
+  UPDATE_USER_SUCCESS: 'Update user success'
 } as const

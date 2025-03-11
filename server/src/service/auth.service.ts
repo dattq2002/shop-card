@@ -137,16 +137,16 @@ class AuthService {
     )
     return { access_token, refresh_token }
   }
-  async resendEmailVerify(user_id: string) {
+  async resendEmailVerify(user: User) {
     //tạo email verify token
     const email_verify_token = await this.signEmailVerifyToken({
-      user_id,
+      user_id: user._id.toString(),
       verify: UserVerifyStatus.Unverified
     })
     //cập nhật lại user
     await databaseService.users.updateOne(
       {
-        _id: new ObjectId(user_id)
+        _id: user._id
       },
       [
         {
@@ -159,6 +159,7 @@ class AuthService {
     )
     //giả lập gửi email verify token
     console.log(email_verify_token)
+    sendVerificationEmail(user.email, user.name, `${process.env.HTTP_PREFIX}/auth/verify-email/${email_verify_token}`)
     return {
       message: USERS_MESSAGES.RESEND_EMAIL_VERIFY_SUCCESS
     }
@@ -170,7 +171,7 @@ class AuthService {
     })
     const { exp, iat } = await this.decodeRefreshToken(refresh_token)
     //lưu refesh token vào db
-    await databaseService.refreshTokens.updateOne(
+    const result = await databaseService.refreshTokens.updateOne(
       {
         user_id
       },
@@ -185,6 +186,18 @@ class AuthService {
         }
       ]
     )
+    // console.log(Boolean(result.upsertedId))
+    if (!result.upsertedId) {
+      await databaseService.refreshTokens.insertOne(
+        new RefreshToken({
+          _id: new ObjectId(),
+          token: refresh_token,
+          user_id,
+          exp,
+          iat
+        })
+      )
+    }
     return { access_token, refresh_token }
   }
   async refreshToken(user_id: ObjectId) {
@@ -210,6 +223,12 @@ class AuthService {
       ]
     )
     return { access_token, refresh_token }
+  }
+  async logout(user_id: string) {
+    const result = await databaseService.refreshTokens.deleteOne({
+      user_id: new ObjectId(user_id)
+    })
+    return Boolean(result)
   }
 }
 

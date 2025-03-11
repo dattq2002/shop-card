@@ -1,14 +1,23 @@
 import { Router } from 'express'
-import { getAllUsersController, GetMeController, GetUserByIdController } from '~/controllers/user.controller'
+import {
+  getAllUsersController,
+  GetMeController,
+  GetUserByIdController,
+  updateUserController
+} from '~/controllers/user.controller'
 import { accessTokenValidator } from '~/middlewares/auth/auth.middleware'
+import { PaginationValidator } from '~/middlewares/auth/pagination.middleware'
+import { updateUserValidator } from '~/middlewares/user.middleware'
 import { wrapAsync } from '~/utils/handlers'
 
 const userRouter = Router()
 
 userRouter.get('/me', accessTokenValidator, wrapAsync(GetMeController))
 
-userRouter.get('/:id', wrapAsync(GetUserByIdController))
+userRouter.get('/:id', accessTokenValidator, wrapAsync(GetUserByIdController))
 
-userRouter.get('/', wrapAsync(getAllUsersController))
+userRouter.get('/', accessTokenValidator, PaginationValidator, wrapAsync(getAllUsersController))
+
+userRouter.put('/:id', accessTokenValidator, updateUserValidator, wrapAsync(updateUserController))
 
 export default userRouter
