@@ -1,7 +1,7 @@
 interface ResponseAnyTypes {
   status: number
   message: string
-  data: any
+  data?: any
 }
 export class ResponseAny {
   status: number

@@ -1,7 +1,9 @@
 import { ObjectId } from 'mongodb'
 import { TokenType, UserVerifyStatus } from '~/constants/enums'
+import HTTP_STATUS from '~/constants/httpStatus'
 import { USERS_MESSAGES } from '~/constants/messages'
 import databaseService from '~/database/config.database'
+import { ErrorWithStatus } from '~/models/errors'
 import { RegisterReqBody } from '~/models/requests/user.request'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
 import User from '~/models/schemas/user.schema'
@@ -138,6 +140,12 @@ class AuthService {
     return { access_token, refresh_token }
   }
   async resendEmailVerify(user: User) {
+    if (user.verify === UserVerifyStatus.Verified) {
+      throw new ErrorWithStatus({
+        status: HTTP_STATUS.BAD_REQUEST,
+        message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED
+      })
+    }
     //tạo email verify token
     const email_verify_token = await this.signEmailVerifyToken({
       user_id: user._id.toString(),

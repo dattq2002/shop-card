@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import databaseService from '~/database/config.database'
 import { UpdateMeReqBody } from '~/models/requests/user.request'
+import { getCurrentDate } from '~/utils/commons'
 import { hashPassword } from '~/utils/crypto'
 
 class UserService {
@@ -35,7 +36,8 @@ class UserService {
         $set: {
           name: name || user.name,
           avatar: avatar || user.avatar,
-          password: password || user.password
+          password: password || user.password,
+          update_date: getCurrentDate()
         }
       }
     )

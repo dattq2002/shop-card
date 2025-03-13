@@ -1,11 +1,12 @@
 import { Router } from 'express'
+import { RoleTypes } from '~/constants/enums'
 import {
   getAllUsersController,
   GetMeController,
   GetUserByIdController,
   updateUserController
 } from '~/controllers/user.controller'
-import { accessTokenValidator } from '~/middlewares/auth/auth.middleware'
+import { accessTokenValidator, allowRole } from '~/middlewares/auth/auth.middleware'
 import { PaginationValidator } from '~/middlewares/auth/pagination.middleware'
 import { updateUserValidator } from '~/middlewares/user.middleware'
 import { wrapAsync } from '~/utils/handlers'
@@ -16,7 +17,13 @@ userRouter.get('/me', accessTokenValidator, wrapAsync(GetMeController))
 
 userRouter.get('/:id', accessTokenValidator, wrapAsync(GetUserByIdController))
 
-userRouter.get('/', accessTokenValidator, PaginationValidator, wrapAsync(getAllUsersController))
+userRouter.get(
+  '/',
+  accessTokenValidator,
+  allowRole([RoleTypes.Admin, RoleTypes.Customer]),
+  PaginationValidator,
+  wrapAsync(getAllUsersController)
+)
 
 userRouter.put('/:id', accessTokenValidator, updateUserValidator, wrapAsync(updateUserController))
 

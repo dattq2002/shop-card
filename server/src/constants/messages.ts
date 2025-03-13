@@ -36,5 +36,6 @@ export const USERS_MESSAGES = {
   LOGOUT_SUCCESS: 'Logout success',
   LOGOUT_FAIL: 'Logout fail',
   YOU_HAVE_NOT_LOGGED_IN: 'You have not logged in',
-  UPDATE_USER_SUCCESS: 'Update user success'
+  UPDATE_USER_SUCCESS: 'Update user success',
+  EMAIL_ALREADY_VERIFIED: 'Email already verified'
 } as const

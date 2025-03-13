@@ -5,13 +5,14 @@ import databaseService from '~/database/config.database'
 import { ErrorWithStatus } from '~/models/errors'
 import { verifyToken } from '~/utils/jwt'
 import { validate } from '~/utils/validation'
-import { Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { ObjectId } from 'mongodb'
 import { UserVerifyStatus } from '~/constants/enums'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { capitalize } from 'lodash'
 import authService from '~/service/auth.service'
 import { passwordSchema, confirmPasswordSchema, emailSchema } from '~/models/paramSchema'
+import { TokenPayload } from '~/models/requests/user.request'
 
 export const RegisterValidator = validate(
   checkSchema(
@@ -68,7 +69,7 @@ export const emailVerifyTokenValidator = validate(
               })
               ;(req as Request).decoded_email_verify_token = decoded_email_verify_token
               const user_id = decoded_email_verify_token.user_id
-              console.log(user_id)
+              // console.log(user_id)
               const user = await databaseService.users.findOne({
                 _id: new ObjectId(user_id)
               })
@@ -76,6 +77,12 @@ export const emailVerifyTokenValidator = validate(
                 throw new ErrorWithStatus({
                   message: USERS_MESSAGES.USER_NOT_FOUND,
                   status: HTTP_STATUS.NOT_FOUND
+                })
+              }
+              if (user.email_verify_token !== value) {
+                throw new ErrorWithStatus({
+                  message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_NOT_MATCH,
+                  status: HTTP_STATUS.UNAUTHORIZED
                 })
               }
               req.user = user
@@ -210,3 +217,24 @@ export const emailValidator = validate(
     ['body']
   )
 )
+
+export const allowRole = (roles: string[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const decoded_authorization = req.decoded_authorization as TokenPayload
+    const user = await databaseService.users.findOne({ _id: new ObjectId(decoded_authorization.user_id) })
+    if (!user) {
+      return void res.json({
+        status: HTTP_STATUS.NOT_FOUND,
+        message: USERS_MESSAGES.USER_NOT_FOUND
+      })
+    }
+    if (roles.includes(user.role)) {
+      req.user = user
+      return next()
+    }
+    return void res.json({
+      status: HTTP_STATUS.FORBIDDEN,
+      message: 'You do not have permission to access'
+    })
+  }
+}

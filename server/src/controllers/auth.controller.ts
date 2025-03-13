@@ -121,12 +121,11 @@ export const LogoutController = async (req: Request, res: Response) => {
 
 export const ResendEmailVerifyController = async (req: Request, res: Response) => {
   const user = req.user as User
-  const result = await authService.resendEmailVerify(user)
+  await authService.resendEmailVerify(user)
   return void res.json(
     new ResponseAny({
       status: res.statusCode,
-      message: USERS_MESSAGES.RESEND_EMAIL_VERIFY_SUCCESS,
-      data: result
+      message: USERS_MESSAGES.RESEND_EMAIL_VERIFY_SUCCESS
     })
   )
 }

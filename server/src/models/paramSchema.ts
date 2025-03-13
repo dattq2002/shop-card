@@ -87,3 +87,26 @@ export const emailSchema: ParamSchema = {
     }
   }
 }
+
+export const nameSchema: ParamSchema = {
+  notEmpty: {
+    errorMessage: USERS_MESSAGES.NAME_IS_REQUIRED
+  },
+  isString: {
+    errorMessage: USERS_MESSAGES.NAME_MUST_BE_A_STRING
+  },
+  isLength: {
+    options: {
+      min: 1,
+      max: 50
+    },
+    errorMessage: 'Name length must be from 1 to 50'
+  }
+}
+
+export const avatarSchema: ParamSchema = {
+  optional: true,
+  isString: {
+    errorMessage: 'Avatar must be a string'
+  }
+}
