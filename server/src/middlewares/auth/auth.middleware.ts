@@ -1,6 +1,6 @@
 import { checkSchema, ParamSchema } from 'express-validator'
 import HTTP_STATUS from '~/constants/httpStatus'
-import { USERS_MESSAGES } from '~/constants/messages'
+import { AUTH_MESSAGES, USERS_MESSAGES } from '~/constants/messages'
 import databaseService from '~/database/config.database'
 import { ErrorWithStatus } from '~/models/errors'
 import { verifyToken } from '~/utils/jwt'
@@ -234,7 +234,7 @@ export const allowRole = (roles: string[]) => {
     }
     return void res.json({
       status: HTTP_STATUS.FORBIDDEN,
-      message: 'You do not have permission to access'
+      message: AUTH_MESSAGES.YOU_DO_NOT_PERMISSION_TO_ACCESS
     })
   }
 }

@@ -7,6 +7,7 @@ import path from 'path'
 import productRouter from '~/routes/product.route'
 import categoryRouter from '~/routes/category.route'
 import userRouter from '~/routes/user.route'
+import orderRouter from '~/routes/order.route'
 
 config()
 const app = express()
@@ -22,7 +23,8 @@ app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/product', productRouter)
 app.use('/api/category', categoryRouter)
-app.use(defaultErrorHandler as any)
+app.use('/api/order', orderRouter)
+app.use(defaultErrorHandler)
 app.listen(port, () => {
   console.log(`Server này đang chạy trên post ${port}`)
 })

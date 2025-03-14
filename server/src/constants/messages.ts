@@ -37,5 +37,26 @@ export const USERS_MESSAGES = {
   LOGOUT_FAIL: 'Logout fail',
   YOU_HAVE_NOT_LOGGED_IN: 'You have not logged in',
   UPDATE_USER_SUCCESS: 'Update user success',
-  EMAIL_ALREADY_VERIFIED: 'Email already verified'
+  EMAIL_ALREADY_VERIFIED: 'Email already verified',
+  NAME_LENGTH_MUST_BE_FROM_1_TO_50: 'Name length must be from 1 to 50'
+} as const
+
+export const CATEGORIES_MESSAGES = {
+  DISCOUNT_PERCENT_MUST_BE_A_NUMBER: 'Discount percent must be a number',
+  DISCOUNT_PERCENT_MUST_BE_FROM_0_TO_100: 'Discount percent must be from 0 to 100',
+  PRICE_IS_REQUIRED: 'Price is required',
+  PRICE_MUST_BE_A_NUMBER: 'Price must be a number'
+} as const
+
+export const PRODUCTS_MESSAGES = {
+  CREATE_PRODUCT_SUCCESS: 'Create product success',
+  CATEGORY_ID_IS_REQUIRED: 'Category Id is required',
+  CATEGORY_ID_MUST_BE_A_STRING: 'Category Id must be a string',
+  QUANTITY_IS_REQUIRED: 'Quantity is required',
+  QUANTITY_MUST_BE_A_NUMBER: 'Quantity must be a number',
+  QUANTITY_MUST_BE_AN_INTEGER: 'Quantity must be an integer'
+} as const
+
+export const AUTH_MESSAGES = {
+  YOU_DO_NOT_PERMISSION_TO_ACCESS: 'You do not permission to access'
 } as const

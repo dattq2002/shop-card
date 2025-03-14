@@ -9,23 +9,19 @@ export enum TokenType {
   ForgotPasswordToken,
   EmailVerificationToken
 }
-export enum MediaType {
-  Image, //0
-  Video //1
-}
-export enum TweetType {
-  Tweet,
-  Retweet,
-  Comment,
-  QuoteTweet
-}
-
-export enum TweetAudience {
-  Everyone,
-  TwitterCircle
-}
 
 export const RoleTypes = {
   Admin: 'Admin',
   Customer: 'Customer'
+}
+
+export const TypeSeriAndCode = {
+  Seri: 'Seri',
+  Code: 'Code'
+}
+
+export const OrderStatus = {
+  Pending: 'Pending',
+  Completed: 'Completed',
+  Cancelled: 'Cancelled'
 }

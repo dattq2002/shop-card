@@ -8,12 +8,18 @@ export const PaginationValidator = validate(
         optional: true,
         isNumeric: {
           errorMessage: 'Page must be a number'
+        },
+        isInt: {
+          errorMessage: 'Page must be an integer'
         }
       },
       size: {
         optional: true,
         isNumeric: {
           errorMessage: 'Size must be a number'
+        },
+        isInt: {
+          errorMessage: 'Size must be an integer'
         }
       }
     },

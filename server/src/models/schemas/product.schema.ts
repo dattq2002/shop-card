@@ -6,6 +6,7 @@ interface ICategory {
   name?: string
   avatar?: string
   discount_percent?: number
+  price?: number
   created_at?: string
   updated_at?: string
 }
@@ -14,6 +15,7 @@ export class Category {
   name: string
   avatar: string
   discount_percent: number
+  price: number
   created_at: string
   updated_at: string
   constructor(category: ICategory) {
@@ -23,31 +25,35 @@ export class Category {
     this.discount_percent = category.discount_percent || 0
     this.created_at = category.created_at || getCurrentDate()
     this.updated_at = category.updated_at || getCurrentDate()
+    this.price = category.price || 0
   }
 }
 
 interface IProduct {
   _id?: ObjectId
-  name?: string
+  seri?: string
+  code?: string
   category_id?: ObjectId
-  price?: number
+  isUsed?: boolean
   created_at?: string
   updated_at?: string
 }
 
 export class Product {
   _id: ObjectId
-  name: string
-  type_id: ObjectId
-  price: number
+  seri: string
+  code: string
+  category_id: ObjectId
+  isUsed: boolean
   created_at: string
   updated_at: string
   constructor(product: IProduct) {
     this._id = product._id || new ObjectId()
-    this.name = product.name || ''
-    this.type_id = product.category_id || new ObjectId()
-    this.price = product.price || 0
+    this.category_id = product.category_id || new ObjectId()
     this.created_at = product.created_at || getCurrentDate()
     this.updated_at = product.updated_at || getCurrentDate()
+    this.seri = product.seri || ''
+    this.code = product.code || ''
+    this.isUsed = product.isUsed || false
   }
 }

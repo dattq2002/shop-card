@@ -8,6 +8,7 @@ import { RegisterReqBody } from '~/models/requests/user.request'
 import RefreshToken from '~/models/schemas/refreshToken.schema'
 import User from '~/models/schemas/user.schema'
 import { StringValue } from '~/type'
+import { getCurrentDate } from '~/utils/commons'
 import { hashPassword } from '~/utils/crypto'
 import { signToken, verifyToken } from '~/utils/jwt'
 import { sendNoReplyEmail, sendVerificationEmail } from '~/utils/mailer'
@@ -181,7 +182,7 @@ class AuthService {
     //lưu refesh token vào db
     const result = await databaseService.refreshTokens.updateOne(
       {
-        user_id
+        user_id: user_id
       },
       [
         {
@@ -189,13 +190,13 @@ class AuthService {
             token: refresh_token,
             exp,
             iat,
-            updated_at: '$$NOW'
+            updated_at: getCurrentDate()
           }
         }
       ]
     )
-    // console.log(Boolean(result.upsertedId))
-    if (!result.upsertedId) {
+    console.log(result)
+    if (result.matchedCount === 0) {
       await databaseService.refreshTokens.insertOne(
         new RefreshToken({
           _id: new ObjectId(),
