@@ -35,6 +35,8 @@ interface IProduct {
   code?: string
   category_id?: ObjectId
   isUsed?: boolean
+  user_id?: ObjectId
+  order_id?: ObjectId
   created_at?: string
   updated_at?: string
 }
@@ -45,6 +47,8 @@ export class Product {
   code: string
   category_id: ObjectId
   isUsed: boolean
+  user_id: ObjectId
+  order_id: ObjectId
   created_at: string
   updated_at: string
   constructor(product: IProduct) {
@@ -55,5 +59,7 @@ export class Product {
     this.seri = product.seri || ''
     this.code = product.code || ''
     this.isUsed = product.isUsed || false
+    this.user_id = product.user_id || new ObjectId()
+    this.order_id = product.order_id || new ObjectId()
   }
 }

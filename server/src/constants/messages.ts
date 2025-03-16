@@ -60,3 +60,13 @@ export const PRODUCTS_MESSAGES = {
 export const AUTH_MESSAGES = {
   YOU_DO_NOT_PERMISSION_TO_ACCESS: 'You do not permission to access'
 } as const
+
+export const ORDER_MESSAGES = {
+  NOT_EMPTY_TOTAL: 'Not empty total',
+  NOT_EMPTY_PRODUCTS: 'Not empty products',
+  NOT_EMPTY_USER_ID: 'Not empty user id',
+  INVALID_USER_ID: 'Invalid user id',
+  INVALID_PRODUCTS: 'Invalid products',
+  INVALID_TOTAL: 'Invalid total',
+  INVALID_TOTAL_INT: 'Invalid total int'
+} as const

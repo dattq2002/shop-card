@@ -195,7 +195,7 @@ class AuthService {
         }
       ]
     )
-    console.log(result)
+    // console.log(result)
     if (result.matchedCount === 0) {
       await databaseService.refreshTokens.insertOne(
         new RefreshToken({

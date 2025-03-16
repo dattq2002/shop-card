@@ -2,7 +2,9 @@ import { Router } from 'express'
 import {
   createProductController,
   deleteProductController,
-  getAllProductController
+  getAllProductController,
+  getProductByOrderIdController,
+  getProductByUserIdController
 } from '~/controllers/product.controller'
 import { accessTokenValidator } from '~/middlewares/auth/auth.middleware'
 import { PaginationValidator } from '~/middlewares/auth/pagination.middleware'
@@ -16,4 +18,8 @@ productRouter.post('/', accessTokenValidator, productValidator, wrapAsync(create
 productRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteProductController))
 
 productRouter.get('/', accessTokenValidator, PaginationValidator, wrapAsync(getAllProductController))
+
+productRouter.get('/user/:user_id', accessTokenValidator, wrapAsync(getProductByUserIdController))
+
+productRouter.get('/order/:order_id', accessTokenValidator, wrapAsync(getProductByOrderIdController))
 export default productRouter

@@ -9,7 +9,7 @@ import categoryService from '~/service/category.service'
 import { generateNumberCard } from '~/utils/commons'
 
 class ProductService {
-  async createProduct(payload: ProductRequest) {
+  async createProduct({ payload, user_id, order_id }: { payload: ProductRequest; user_id: string; order_id?: string }) {
     const checkCateId = await categoryService.getCategoryById(payload.category_id)
     if (!checkCateId) {
       throw new ErrorWithStatus({
@@ -24,7 +24,9 @@ class ProductService {
         new Product({
           category_id: new ObjectId(payload.category_id),
           seri: generateNumberCard(TypeSeriAndCode.Seri, 10),
-          code: generateNumberCard(TypeSeriAndCode.Code, 12)
+          code: generateNumberCard(TypeSeriAndCode.Code, 12),
+          user_id: new ObjectId(user_id),
+          order_id: order_id ? new ObjectId(order_id) : new ObjectId()
         })
       )
       const newProduct = await databaseService.products.findOne(insert.insertedId)
@@ -56,6 +58,14 @@ class ProductService {
       total,
       products
     }
+  }
+  async getProductByUserId(user_id: string) {
+    const products = await databaseService.products.find({ user_id: new ObjectId(user_id) }).toArray()
+    return products
+  }
+  async getProductByOrderId(order_id: string) {
+    const products = await databaseService.products.find({ order_id: new ObjectId(order_id) }).toArray()
+    return products
   }
 }
 
