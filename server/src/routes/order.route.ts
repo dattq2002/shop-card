@@ -8,6 +8,7 @@ import {
   getOrderByIdController,
   updateOrderController
 } from '~/controllers/order.controller'
+import { paymentController } from '~/controllers/payment.controller'
 import { accessTokenValidator } from '~/middlewares/auth/auth.middleware'
 import { PaginationValidator } from '~/middlewares/auth/pagination.middleware'
 import { orderValidator } from '~/middlewares/order.middleware'
@@ -15,7 +16,13 @@ import { wrapAsync } from '~/utils/handlers'
 
 const orderRouter = Router()
 
-orderRouter.post('/', accessTokenValidator, orderValidator, wrapAsync(createOrderController))
+orderRouter.post(
+  '/',
+  accessTokenValidator,
+  orderValidator,
+  wrapAsync(createOrderController),
+  wrapAsync(paymentController)
+)
 
 orderRouter.get('/:id', accessTokenValidator, wrapAsync(getOrderByIdController))
 

@@ -29,3 +29,13 @@ export const generateNumberCard = (type: string, lenght: number) => {
     throw new Error('Type must be Seri or Code')
   }
 }
+
+export const safeStringify = (obj: any) => {
+  try {
+    console.log('obj', obj)
+    return JSON.stringify(obj)
+  } catch (err) {
+    console.error('Circular structure detected:', err)
+    return '{}' // Trả về object rỗng nếu có vòng lặp
+  }
+}

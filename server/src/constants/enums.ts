@@ -25,3 +25,8 @@ export const OrderStatus = {
   Completed: 'Completed',
   Cancelled: 'Cancelled'
 }
+
+export enum PaymentMethod {
+  CASH = 'Cash',
+  ZALOPAY = 'ZaloPay'
+}

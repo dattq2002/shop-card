@@ -5,18 +5,18 @@ import { OrderRequest } from '~/models/requests/order.request'
 import { TokenPayload } from '~/models/requests/user.request'
 import orderService from '~/service/order.service'
 
-export const createOrderController = async (req: Request<ParamsDictionary, any, OrderRequest>, res: Response) => {
+export const createOrderController = async (
+  req: Request<ParamsDictionary, any, OrderRequest>,
+  res: Response,
+  next: NextFunction
+) => {
   const decoded_authorization = req.decoded_authorization as TokenPayload
   const result = await orderService.createOrder(req.body, decoded_authorization.user_id)
   if (result) {
-    return void res.json(
-      new ResponseAny({
-        status: res.statusCode,
-        message: 'Create order success',
-        data: result
-      })
-    )
+    req.order = result
+    return next()
   }
+  throw new Error('Error at createOrderController')
 }
 
 export const getOrderByIdController = async (req: Request, res: Response) => {

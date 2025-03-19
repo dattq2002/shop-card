@@ -14,6 +14,7 @@ interface UserTypes {
   verify: UserVerifyStatus
   create_date?: string
   update_date?: string
+  balance?: number
 }
 
 export default class User {
@@ -28,6 +29,7 @@ export default class User {
   flag: boolean
   email_verify_token: string
   verify: UserVerifyStatus
+  balance: number
   constructor(user: UserTypes) {
     this._id = new ObjectId()
     this.name = user.name || ''
@@ -40,5 +42,6 @@ export default class User {
     this.flag = user.flag || false
     this.email_verify_token = user.email_verify_token || ''
     this.verify = user.verify
+    this.balance = user.balance || 0
   }
 }
