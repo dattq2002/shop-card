@@ -38,5 +38,6 @@ orderRouter.get(
   wrapAsync(confirmOrderController),
   wrapAsync(generateProductController)
 )
+orderRouter.get('/confirm-online/:id', wrapAsync(confirmOrderController), wrapAsync(generateProductController))
 
 export default orderRouter

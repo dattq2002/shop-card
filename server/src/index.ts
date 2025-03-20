@@ -3,11 +3,12 @@ import express from 'express'
 import databaseService from '~/database/config.database'
 import { defaultErrorHandler } from '~/middlewares/error.middleware'
 import authRouter from '~/routes/auth.route'
-import path from 'path'
 import productRouter from '~/routes/product.route'
 import categoryRouter from '~/routes/category.route'
 import userRouter from '~/routes/user.route'
 import orderRouter from '~/routes/order.route'
+import { zaloPaymentCallback } from '~/controllers/payment.controller'
+import { wrapAsync } from '~/utils/handlers'
 
 config()
 const app = express()
@@ -24,6 +25,7 @@ app.use('/api/user', userRouter)
 app.use('/api/product', productRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/order', orderRouter)
+app.post('/callback', wrapAsync(zaloPaymentCallback))
 app.use(defaultErrorHandler)
 app.listen(port, () => {
   console.log(`Server này đang chạy trên post ${port}`)

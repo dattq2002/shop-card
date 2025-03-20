@@ -76,7 +76,10 @@ export const cancelOrderController = async (req: Request, res: Response) => {
 
 export const confirmOrderController = async (req: Request, res: Response, next: NextFunction) => {
   const decoded_authorization = req.decoded_authorization as TokenPayload
-  const result = await orderService.confirmOrder(req.params.id, decoded_authorization.user_id)
+  const result = await orderService.confirmOrder(
+    req.params.id,
+    decoded_authorization === undefined ? undefined : decoded_authorization.user_id
+  )
   if (result) {
     req.order = result
     return next()

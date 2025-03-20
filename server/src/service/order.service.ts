@@ -73,23 +73,42 @@ class OrderService {
       message: 'Order not found'
     })
   }
-  async confirmOrder(id: string, userId: string) {
-    const result = await databaseService.orders.updateOne(
-      { _id: new ObjectId(id), userId: new ObjectId(userId), status: OrderStatus.Pending },
-      {
-        $set: {
-          status: OrderStatus.Completed,
-          updated_at: getCurrentDate()
+  async confirmOrder(id: string, userId?: string) {
+    if (userId !== undefined) {
+      const result = await databaseService.orders.updateOne(
+        { _id: new ObjectId(id), userId: new ObjectId(userId), status: OrderStatus.Pending },
+        {
+          $set: {
+            status: OrderStatus.Completed,
+            updated_at: getCurrentDate()
+          }
         }
+      )
+      if (result.matchedCount !== 0) {
+        return await databaseService.orders.findOne({ _id: new ObjectId(id) })
       }
-    )
-    if (result.matchedCount !== 0) {
-      return await databaseService.orders.findOne({ _id: new ObjectId(id) })
+      throw new ErrorWithStatus({
+        status: HTTP_STATUS.NOT_FOUND,
+        message: 'Order not found or Order is not pending'
+      })
+    } else {
+      const result = await databaseService.orders.updateOne(
+        { _id: new ObjectId(id), status: OrderStatus.Pending },
+        {
+          $set: {
+            status: OrderStatus.Completed,
+            updated_at: getCurrentDate()
+          }
+        }
+      )
+      if (result.matchedCount !== 0) {
+        return await databaseService.orders.findOne({ _id: new ObjectId(id) })
+      }
+      throw new ErrorWithStatus({
+        status: HTTP_STATUS.NOT_FOUND,
+        message: 'Order not found or Order is not pending'
+      })
     }
-    throw new ErrorWithStatus({
-      status: HTTP_STATUS.NOT_FOUND,
-      message: 'Order not found or Order is not pending'
-    })
   }
   async generateProduct(order: Order) {
     order.products.forEach(async (element) => {
