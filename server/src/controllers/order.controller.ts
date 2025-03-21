@@ -92,11 +92,5 @@ export const generateProductController = async (req: Request, res: Response) => 
     throw new Error('Error at generateProductController')
   }
   const result = await orderService.generateProduct(req.order)
-  return void res.json(
-    new ResponseAny({
-      status: res.statusCode,
-      message: 'Confirm Order success',
-      data: result
-    })
-  )
+  return void res.write(result)
 }

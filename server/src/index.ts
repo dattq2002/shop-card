@@ -9,11 +9,21 @@ import userRouter from '~/routes/user.route'
 import orderRouter from '~/routes/order.route'
 import { zaloPaymentCallback } from '~/controllers/payment.controller'
 import { wrapAsync } from '~/utils/handlers'
+import cors from 'cors'
 
 config()
+//add cors
 const app = express()
 const port = process.env.PORT
-app.use(express.json())
+app.use(
+  express.json(),
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  })
+)
+
 databaseService.connect().then(() => {
   // databaseService.initDatabase()
 })

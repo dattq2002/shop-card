@@ -38,27 +38,6 @@ export const zaloPaymentCallback = (req: Request, res: Response, next: NextFunct
     } else {
       let dataJson = JSON.parse(dataStr)
       console.log("update order's status = success where app_trans_id =", dataJson['app_trans_id'])
-      // let dataJson: OrderRequest_ZaloPay = JSON.parse(dataStr)
-      // console.log(dataJson)
-      // const order_id = split(dataJson.app_trans_id, '_')[1]
-      // console.log('order_id=', order_id)
-      // const data_rs = await orderService.confirmOrder(req.params.id, dataJson.app_user)
-      // console.log('a=', data_rs)
-      // if (!data_rs) {
-      //   result.return_code = 0
-      //   result.return_message = 'order not found'
-      //   res.json(result)
-      //   return
-      // }
-      // const rs = await orderService.generateProduct(data_rs)
-      // console.log('b=', rs)
-      // if (!rs) {
-      //   result.return_code = 0
-      //   result.return_message = 'generate product failed'
-      //   res.json(result)
-      //   return
-      // }
-      //
       result.return_code = 1
       result.return_message = 'success'
     }

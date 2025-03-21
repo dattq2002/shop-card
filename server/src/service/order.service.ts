@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { OrderStatus } from '~/constants/enums'
+import { OrderStatus, RoleTypes } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import databaseService from '~/database/config.database'
 import { ErrorWithStatus } from '~/models/errors'
@@ -84,6 +84,25 @@ class OrderService {
           }
         }
       )
+      await databaseService.payments.updateOne(
+        { order_id: new ObjectId(id) },
+        {
+          $set: {
+            status: OrderStatus.Completed,
+            update_date: getCurrentDate()
+          }
+        }
+      )
+      await databaseService.transactions.updateOne(
+        { order_id: new ObjectId(id) },
+        {
+          $set: {
+            status: OrderStatus.Completed,
+            update_date: getCurrentDate()
+          }
+        }
+      )
+
       if (result.matchedCount !== 0) {
         return await databaseService.orders.findOne({ _id: new ObjectId(id) })
       }
@@ -101,6 +120,24 @@ class OrderService {
           }
         }
       )
+      await databaseService.payments.updateOne(
+        { order_id: new ObjectId(id) },
+        {
+          $set: {
+            status: OrderStatus.Completed,
+            update_date: getCurrentDate()
+          }
+        }
+      )
+      await databaseService.transactions.updateOne(
+        { order_id: new ObjectId(id) },
+        {
+          $set: {
+            status: OrderStatus.Completed,
+            update_date: getCurrentDate()
+          }
+        }
+      )
       if (result.matchedCount !== 0) {
         return await databaseService.orders.findOne({ _id: new ObjectId(id) })
       }
@@ -111,6 +148,15 @@ class OrderService {
     }
   }
   async generateProduct(order: Order) {
+    await databaseService.users.updateOne(
+      { role: RoleTypes.Admin },
+      {
+        $set: {
+          balance: order.total,
+          updated_at: getCurrentDate()
+        }
+      }
+    )
     order.products.forEach(async (element) => {
       await productService.createProduct({
         payload: { category_id: element._id, quantity: element.quantity },
