@@ -62,13 +62,13 @@ export default function Login() {
               <div className='pr-1'>
                 <p className='text-sm text-gray-600 text-right'>
                   Don't have an account?{' '}
-                  <a href='/register' className='font-medium text-indigo-600 hover:text-indigo-500'>
+                  <a href='/register' className='font-medium text-blue-400 hover:text-blue-400'>
                     Sign up
                   </a>
                 </p>
               </div>
             </div>
-            <Button className='w-full flex justify-center py-2 px-4 border border-transparent rounded-sm shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'>
+            <Button className='w-full flex justify-center py-2 px-4 border border-transparent rounded-sm shadow-sm text-sm font-medium text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'>
               <a href='/'>Sign in</a>
             </Button>
           </form>
