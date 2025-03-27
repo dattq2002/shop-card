@@ -27,8 +27,8 @@ export default function Login() {
   })
   return (
     <>
-      <div className='min-h-screen flex items-center justify-center bg-white min-w-[375px]'>
-        <div className='bg-white p-8 rounded-lg w-full max-w-md'>
+      <div className='min-h-screen flex items-center justify-center bg-gray-200 min-w-[375px]'>
+        <div className='bg-white p-8 rounded-lg w-full max-w-md shadow-2xl'>
           <div className='w-40 h-33 mx-auto'>
             <img src='/logo.png' alt='Workflow' />
           </div>
